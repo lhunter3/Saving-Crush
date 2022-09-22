@@ -1,7 +1,8 @@
 import pygame, sys, time, random, colorsys, math
 from pygame.math import Vector2
 from pygame.locals import *
-from button import Button 
+from button import Button
+
 
 
 def main():
@@ -13,18 +14,11 @@ def main():
     clock.tick(FPS)
 
     # set the display
-    DISPLAY=pygame.display.set_mode((640,480),0,32)
     pygame.display.set_caption('Save the Turtles')
+    DISPLAY=pygame.display.set_mode((640,480),0,32)
 
-    # loading screen bg
 
-    lsBg = pygame.image.load("data/gfx/lsBg2.jpeg")
-    lsBg = pygame.transform.smoothscale(lsBg, (640,480))
-
-    lsBgHeight = lsBg.get_height()
-    lsBgWidth = lsBg.get_width()
-    lsBgRec = lsBg.get_rect()
-    tiles = math.ceil(480/lsBgHeight) +1
+   
     
     
     # get fonts
@@ -57,21 +51,9 @@ def main():
         last_time = time.time()
         loadingScreenTimer += dt
 
-        startMessage = font_small.render("LOCATING TURTLES...", True, GREENBLUE)
-        # loadingScreen background
+        # drawing background and text
         DISPLAY.fill(DARKBLUE)
-
-        loadingScreenScroll -= 1
-        loadingScreenScrollX += 3
-                        
-        #reset scroll
-        if abs(loadingScreenScroll) > lsBgHeight:
-            loadingScreenScroll = 0
-    
-        if abs(loadingScreenScrollX) > lsBgWidth:
-            loadingScreenScrollX = 0
-
-        # loadingScreen text
+        startMessage = font_small.render("LOCATING TURTLES...", True, GREENBLUE)     
         DISPLAY.blit(startMessage, (DISPLAY.get_width()/2 - startMessage.get_width()/2, DISPLAY.get_height()/2 - startMessage.get_height()/2))
 
         # EXIT
@@ -86,6 +68,13 @@ def main():
 
 
     while menu:
+
+        # MENU BACKGROUND
+        lsBg = pygame.image.load("data/gfx/lsBg2.jpeg")
+        lsBg = pygame.transform.smoothscale(lsBg, (640,480))
+        lsBgHeight = lsBg.get_height()
+        lsBgWidth = lsBg.get_width()
+
 
         # TITLE 
         DISPLAY.blit(lsBg, (0,0))
