@@ -2,6 +2,7 @@ import pygame, sys, time, random, colorsys, math
 from pygame.math import Vector2
 from pygame.locals import *
 from button import Button
+from turtle import Turtle
 
 
 
@@ -15,12 +16,9 @@ def main():
 
     # set the display
     pygame.display.set_caption('Save the Turtles')
+    pygame.display.set_icon(Turtle().sprite)
     DISPLAY=pygame.display.set_mode((640,480),0,32)
-
-
-   
-    
-    
+          
     # get fonts
     font_small = pygame.font.Font('data/fonts/font.otf', 32)
 
@@ -32,24 +30,16 @@ def main():
 
     # variables
 
-    loadingScreenTimer = 0
-    last_time = time.time()
-    loadingScreenScroll = 0
-    loadingScreenScrollX = 0
-
-    # creating a new object player
-
-   
-    
+    ssTimer = 0
+    last_time = time.time()    
     menu = True
 
-    while loadingScreenTimer < 100:
-
-        
+    while ssTimer < 100:
+   
         dt = time.time() - last_time
         dt *= 60
         last_time = time.time()
-        loadingScreenTimer += dt
+        ssTimer += dt
 
         # drawing background and text
         DISPLAY.fill(DARKBLUE)
@@ -64,7 +54,6 @@ def main():
         
         # update display
         pygame.display.update()
-
 
 
     while menu:
@@ -83,10 +72,8 @@ def main():
         DISPLAY.blit(title, (DISPLAY.get_width()/2 - title.get_width()/2, DISPLAY.get_height()/6 - title.get_height()/2))  
 
         ## MENU BUTTONS
-        start_img = pygame.image.load("data/gfx/start_btn.png").convert()
-        exit_img = pygame.image.load("data/gfx/exit_btn.png").convert()
-        start_button = Button(DISPLAY.get_width()/4, 200, start_img, 0.4)
-        exit_button = Button(DISPLAY.get_width()/2 , 200, exit_img, 0.4)
+        start_button = Button(100,300,"START",font_small)
+        exit_button = Button(350,300,"QUIT",font_small)
         
         ## START
         if start_button.draw(DISPLAY):
@@ -110,7 +97,7 @@ def main():
         # update display
         pygame.display.update()
 
-        
+    scroll = 0  
 
     while game:
 
@@ -120,8 +107,40 @@ def main():
         #4. Turtle save 
         # UI
 
-        DISPLAY.fill(WHITE)
+        # GAME BACKGROUND
+        DISPLAY.fill(BLUE)
+        bg = pygame.image.load("data/gfx/bg.jpg")
+        tiles = math.ceil(DISPLAY.get_width()/ bg.get_width()) + 1
+        scroll -= 1
+        for i in range(0, tiles):
+            DISPLAY.blit(bg, (i * bg.get_width() + scroll, 0))
+
+        
+        if abs(scroll) > bg.get_width():
+            scroll = 0
+
    
+
+
+
+        # Setup Turtle Sprites
+        turtles = []
+        for i in range(2): 
+            turtles.append(Turtle())
+
+        for turtle in turtles:
+            turtle.position.xy = random.randrange(0, DISPLAY.get_width() - turtle.sprite.get_width()), random.randrange(0,DISPLAY.get_height()-turtle.sprite.get_height())
+
+        camOffset = 0
+
+
+        # Display Turtle Sprites
+        for turtle in turtles:
+            DISPLAY.blit(turtle.sprite, (turtle.position.x + camOffset, turtle.position.y))
+
+
+
+
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
