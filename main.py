@@ -13,9 +13,14 @@ def main():
     FPS = 60
     clock.tick(FPS)
 
+
+    # gfx
+    turtleA = "data/gfx/turtle.png"
+    turtleB= "data/gfx/turtleB.png"
+
     # set the display
     pygame.display.set_caption('Save the Turtles')
-    pygame.display.set_icon(Turtle().sprite)
+    pygame.display.set_icon(Turtle(turtleA).sprite)
     DISPLAY=pygame.display.set_mode((640,480),0,32)
           
     # get fonts
@@ -37,13 +42,14 @@ def main():
     last_time = time.time()    
     menu = True
 
-
     turtles = []
+    turtleEnemies = []
     turtleMultiplier = 2
-
-    for i in range(turtleMultiplier): turtles.append(Turtle())
+    turtleSpeed = 2
+  
+    for i in range(turtleMultiplier): turtles.append(Turtle("data/gfx/turtle.png"))
     for turtle in turtles:
-        turtle.position.xy = random.randrange(0, DISPLAY.get_width() - turtle.sprite.get_width()), random.randrange(0,DISPLAY.get_height()-turtle.sprite.get_height())
+        turtle.position.xy = int(random.randrange(DISPLAY.get_width(), DISPLAY.get_width()+100)), random.randrange(0,DISPLAY.get_height()-turtle.sprite.get_height())
 
     while ssTimer < 75:
    
@@ -121,14 +127,13 @@ def main():
 
         scroll = 0  
         dead = False
-        camOffset = 0
 
         while game:
 
             dt = time.time() - last_time
             dt *= 60
             last_time = time.time()
-            mouseX,mouseY = pygame.mouse.get_pos()
+
             #1. Scrolling bg
             #2. Loading Turtle Sprites.
             #3. Load Player
@@ -157,26 +162,63 @@ def main():
             if turtles.__len__() < turtleMultiplier:
 
                 for i in range(turtles.__len__(),turtleMultiplier):
-                   turtles.append(Turtle())
+                   temp = Turtle(turtleA)
+                   temp.position.xy = int(random.randrange(DISPLAY.get_width(), DISPLAY.get_width()*2)), random.randrange(0,DISPLAY.get_height()-turtle.sprite.get_height())
+                   turtles.append(temp)
                 
-                for turtle in turtles:
-                        turtle.position.xy = random.randrange(0, DISPLAY.get_width() - turtle.sprite.get_width()), random.randrange(0,DISPLAY.get_height()-turtle.sprite.get_height())
-
             for turtle in turtles:
-                DISPLAY.blit(turtle.sprite, (turtle.position.x , turtle.position.y))
-                    
+                DISPLAY.blit(turtle.sprite, (turtle.position.x , turtle.position.y + math.sin(time.time()*5)*2.5))
 
-        
+            
+                                   
 
             # DISPLAY TURTLE SPRITES
-           # for turtle in turtles:
-           #     DISPLAY.blit(turtle.sprite, (turtle.position.x + camOffset, turtle.position.y))
 
             for turtle in turtles:
-                if turtle.update() == True:
+                #Remove if Off screen
+                if turtle.update(turtleSpeed) == True:
                     turtles.remove(turtle)
 
-    
+                #mouseX,mouseY = pygame.mouse.get_pos()
+                #print(pygame.mouse.get_pos())
+            
+                #if checkCollision(turtle,mouseX,mouseY) == True:
+                #    turtles.remove(turtle)
+
+
+
+
+
+
+            if turtleEnemies.__len__() < math.ceil(turtleMultiplier/2):
+
+                for i in range(turtleEnemies.__len__(),math.ceil(turtleMultiplier/2)):
+                   temp = Turtle(turtleB)
+                   temp.position.xy = int(random.randrange(DISPLAY.get_width(), DISPLAY.get_width()*2)), random.randrange(0,DISPLAY.get_height()-turtle.sprite.get_height())
+                   turtleEnemies.append(temp)
+                
+            for turtle in turtleEnemies:
+                DISPLAY.blit(turtle.sprite, (turtle.position.x , turtle.position.y + math.sin(time.time()*5)*2.5))
+
+            
+                                   
+
+            # DISPLAY TURTLE SPRITES
+
+            for turtle in turtleEnemies:
+                #Remove if Off screen
+                if turtle.update(turtleSpeed) == True:
+                    turtleEnemies.remove(turtle)
+
+
+
+
+
+
+
+
+
+
             
 
             for event in pygame.event.get():
@@ -193,6 +235,13 @@ def main():
                 break
 
 
+def checkCollision(turtle,mouse):
+    col = pygame.sprite.spritecollide(turtle,mouse)
+
+    if col == True:
+        return True
+    else:
+        return False
 
 
 if __name__ == "__main__":
