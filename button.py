@@ -1,3 +1,5 @@
+import math
+import time
 import pygame
 from pygame.locals import *
 
@@ -23,7 +25,7 @@ class Button():
 		self.text = text
 		self.font = font
 
-	def draw(self, surface):
+	def draw(self, surface, sound):
 
 		global clicked
 		action = False
@@ -32,7 +34,7 @@ class Button():
 		pos = pygame.mouse.get_pos()
 
 		#create pygame Rect object for the button
-		button_rect = Rect(self.x, self.y, self.width, self.height)
+		button_rect = Rect(self.x, self.y + math.sin(time.time()*5)*2.5 - 25, self.width, self.height)
 		
 		#check mouseover and clicked conditions
 		if button_rect.collidepoint(pos):
@@ -52,5 +54,5 @@ class Button():
 		text_img = self.font.render(self.text, True, self.text_col)
 		text_len = text_img.get_width()
 		text_hi = text_img.get_height()
-		surface.blit(text_img, (self.x + int(self.width / 2) - int(text_len / 2), self.y + int(self.height/2 - int(text_hi/2))))
+		surface.blit(text_img, (self.x + int(self.width / 2) - int(text_len / 2), self.y + math.sin(time.time()*5)*2.5 - 25 + int(self.height/2 - int(text_hi/2))))
 		return action
