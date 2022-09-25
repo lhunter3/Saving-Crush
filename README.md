@@ -19,7 +19,13 @@ You can download the latest MacOS build [here]()
 ```console
   python -m pip install pygame
 ```
-    
+
+## Screenshots
+
+![Main Menu](https://user-images.githubusercontent.com/80433013/192170896-6f7030cf-0c0c-459e-83bf-3ead53d4d945.JPG)
+
+
+
 ## Authors
 
 - [Lucas Hunter](https://www.github.com/lhunter3)
