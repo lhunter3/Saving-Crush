@@ -7,7 +7,7 @@ class Player(pygame.sprite.Sprite):
         self.sprite = pygame.image.load("data/gfx/sc.png")
         self.image = pygame.image.load("data/gfx/sc.png")
         self.rect = self.sprite.get_rect()
-        self.img_offset = (-50,-40)
+        self.img_offset = (0,0)
         self.highscore = "0"
 
         with open("data/scores.txt", "r",encoding="utf-8") as f:
