@@ -6,19 +6,14 @@ class Turtle():
         self.rect = self.sprite.get_rect()
         self.position = pygame.Vector2()
         self.position.xy = [0,0]
-        self.outOfBounds = False
-        self.turtleLen = self.sprite.get_width()
+        self.img_offset = (0,0)
 
     def update(self,dist):
 
-        # distance moved in 1 frame, try changing it to 5
         self.position.xy = [(self.position.x - dist),  self.position.y]
-        
-        self.rect = pygame.Rect(self.position.x,self.position.y,self.sprite.get_height(),self.sprite.get_width())
-        if self.position.x < 0 - self.turtleLen:
-            self.outOfBounds = True
-
-        return self.outOfBounds
+        self.rect.topleft = self.position.xy
+        self.rect.move_ip(self.img_offset)
+        return self.position.x < 0 - self.sprite.get_width()
 
 
 
