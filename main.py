@@ -4,7 +4,6 @@ from pygame.math import Vector2
 from pygame.locals import *
 from button import Button
 from powerUp import PowerUp
-from shopButton import ShopButton
 from turtle import Turtle
 from player import Player
 from util import Util
@@ -18,11 +17,21 @@ def main():
     clock.tick(FPS)
 
 
-    # gfx
+    # LOADING GFX
     turtleA = "data/gfx/turtle.png"
     turtleB= "data/gfx/turtleB.png"
-
     shop = pygame.image.load('data/gfx/shop.png')
+
+    pUp = PowerUp("data/gfx/shop_button.png")
+    pUp.position.xy = (220,393)
+
+    pUp2 = PowerUp("data/gfx/shop_button.png")
+    pUp2.position.xy = (345,393)
+
+    pUp3 = PowerUp("data/gfx/shop_button.png")
+    pUp3.position.xy = (470,393)
+
+    
     # set the display
     pygame.display.set_caption('Saving Crush')
     pygame.display.set_icon(Turtle(turtleA).sprite)
@@ -35,8 +44,7 @@ def main():
     font = pygame.font.Font('data/fonts/font.otf', 100)
     font_normal = pygame.font.Font('data/fonts/font.otf', 25)
 
-    # sfx   
-    splash = pygame.mixer.Sound("data/sfx/splash.mp3")
+    # LOADING SFX   
     click = pygame.mixer.Sound("data/sfx/click.wav")
     hover = pygame.mixer.Sound("data/sfx/hover.wav")
     sploosh = pygame.mixer.Sound("data/sfx/sploosh.wav")
@@ -62,23 +70,14 @@ def main():
     turtleEnemies = []
     turtleMultiplier = 3
     turtleSpeed = 2
-    buttons = []
     DEFAULTPRICE = 5
 
-    pUp = PowerUp("data/gfx/shop_button.png")
-    pUp.position.xy = (220,393)
-
-    pUp2 = PowerUp("data/gfx/shop_button.png")
-    pUp2.position.xy = (345,393)
-
-    pUp3 = PowerUp("data/gfx/shop_button.png")
-    pUp3.position.xy = (470,393)
-
     
     
     
     
-    for i in range(turtleMultiplier): turtles.append(Turtle("data/gfx/turtle.png"))
+    
+    for i in range(turtleMultiplier): turtles.append(Turtle(turtleA))
     for turtle in turtles:
         turtle.position.xy = int(random.randrange(DISPLAY.get_width(), DISPLAY.get_width()+100)), random.randrange(0,DISPLAY.get_height()-turtle.sprite.get_height()-75)
 
@@ -175,7 +174,7 @@ def main():
         cash = 0
         level = 0
         health = 100
-        healthColor = Util.hexcolor(health,[0,100],False)
+        healthColor = Util.hexcolor(health,[0,50],False)
         healthDegen = 0.1
 
         while game:
